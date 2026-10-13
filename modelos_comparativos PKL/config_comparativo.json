@@ -1,0 +1,166 @@
+{
+  "version": 1,
+  "fecha_entrenamiento": "2026-10-12T20:15:43",
+  "umbral": 0.5,
+  "criterio_ranking": "F1-score de la clase moroso (desempate: Recall moroso, luego ROC-AUC)",
+  "mejor_modelo": "Gradient Boosting",
+  "split": {
+    "test_size": 0.2,
+    "random_state": 42,
+    "stratify": true,
+    "filas_entrenamiento": 8101,
+    "filas_prueba": 2026,
+    "morosos_prueba": 325
+  },
+  "columnas_categoricas": [
+    "sexo",
+    "escolaridade",
+    "estado_civil",
+    "salario_anual",
+    "tipo_cartao"
+  ],
+  "columnas_numericas": [
+    "idade",
+    "dependentes",
+    "meses_de_relacionamento",
+    "qtd_produtos",
+    "iteracoes_12m",
+    "meses_inativo_12m",
+    "limite_credito",
+    "valor_transacoes_12m",
+    "qtd_transacoes_12m"
+  ],
+  "categorias": {
+    "sexo": [
+      "F",
+      "M"
+    ],
+    "escolaridade": [
+      "doutorado",
+      "ensino medio",
+      "graduacao",
+      "mestrado",
+      "na",
+      "sem educacao formal"
+    ],
+    "estado_civil": [
+      "casado",
+      "divorciado",
+      "na",
+      "solteiro"
+    ],
+    "salario_anual": [
+      "$120K +",
+      "$40K - $60K",
+      "$60K - $80K",
+      "$80K - $120K",
+      "menos que $40K",
+      "na"
+    ],
+    "tipo_cartao": [
+      "blue",
+      "gold",
+      "platinum",
+      "silver"
+    ]
+  },
+  "entorno": {
+    "python": "3.14.8",
+    "scikit_learn": "1.9.1",
+    "pandas": "3.0.6",
+    "numpy": "2.5.3",
+    "joblib": "1.6.0"
+  },
+  "modelos": [
+    {
+      "ranking": 1,
+      "modelo": "Gradient Boosting",
+      "archivo": "gradient_boosting.pkl",
+      "accuracy": 0.9348469891,
+      "precision_moroso": 0.7519582245,
+      "recall_moroso": 0.8861538462,
+      "f1_moroso": 0.813559322,
+      "roc_auc": 0.9780925248,
+      "verdaderos_negativos": 1606,
+      "falsos_positivos": 95,
+      "falsos_negativos": 37,
+      "verdaderos_positivos": 288,
+      "tiempo_entrenamiento_s": 2.45
+    },
+    {
+      "ranking": 2,
+      "modelo": "Random Forest",
+      "archivo": "random_forest.pkl",
+      "accuracy": 0.9407699901,
+      "precision_moroso": 0.8474576271,
+      "recall_moroso": 0.7692307692,
+      "f1_moroso": 0.8064516129,
+      "roc_auc": 0.9718645141,
+      "verdaderos_negativos": 1656,
+      "falsos_positivos": 45,
+      "falsos_negativos": 75,
+      "verdaderos_positivos": 250,
+      "tiempo_entrenamiento_s": 0.59
+    },
+    {
+      "ranking": 3,
+      "modelo": "Árbol de decisión",
+      "archivo": "arbol_decision.pkl",
+      "accuracy": 0.8988153998,
+      "precision_moroso": 0.6401869159,
+      "recall_moroso": 0.8430769231,
+      "f1_moroso": 0.7277556441,
+      "roc_auc": 0.9278759101,
+      "verdaderos_negativos": 1547,
+      "falsos_positivos": 154,
+      "falsos_negativos": 51,
+      "verdaderos_positivos": 274,
+      "tiempo_entrenamiento_s": 0.05
+    },
+    {
+      "ranking": 4,
+      "modelo": "SVM",
+      "archivo": "svm.pkl",
+      "accuracy": 0.8943731491,
+      "precision_moroso": 0.7193675889,
+      "recall_moroso": 0.56,
+      "f1_moroso": 0.6297577855,
+      "roc_auc": 0.9293555827,
+      "verdaderos_negativos": 1630,
+      "falsos_positivos": 71,
+      "falsos_negativos": 143,
+      "verdaderos_positivos": 182,
+      "tiempo_entrenamiento_s": 6.61
+    },
+    {
+      "ranking": 5,
+      "modelo": "Regresión logística",
+      "archivo": "regresion_logistica.pkl",
+      "accuracy": 0.8129318855,
+      "precision_moroso": 0.4524647887,
+      "recall_moroso": 0.7907692308,
+      "f1_moroso": 0.5755879059,
+      "roc_auc": 0.8910667933,
+      "verdaderos_negativos": 1390,
+      "falsos_positivos": 311,
+      "falsos_negativos": 68,
+      "verdaderos_positivos": 257,
+      "tiempo_entrenamiento_s": 0.05
+    },
+    {
+      "ranking": 6,
+      "modelo": "KNN",
+      "archivo": "knn.pkl",
+      "accuracy": 0.8845014808,
+      "precision_moroso": 0.7459459459,
+      "recall_moroso": 0.4246153846,
+      "f1_moroso": 0.5411764706,
+      "roc_auc": 0.8427006738,
+      "verdaderos_negativos": 1654,
+      "falsos_positivos": 47,
+      "falsos_negativos": 187,
+      "verdaderos_positivos": 138,
+      "tiempo_entrenamiento_s": 0.02
+    }
+  ]
+}
