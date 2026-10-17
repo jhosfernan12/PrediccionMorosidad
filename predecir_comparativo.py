@@ -146,6 +146,14 @@ else:
         for n, a in MODELOS_POR_DEFECTO
     ]
 
+# TEXTO DE LA VALIDACIÓN CRUZADA (K-FOLD)
+# Descripción de la validación cruzada usada en el entrenamiento
+_VC = CONFIG.get("validacion_cruzada") if CONFIG else None
+TEXTO_VC = (
+    f"K-fold K={_VC['k_folds']}, {_VC['repeticiones']} repeticiones"
+    if _VC else "K-fold"
+)
+
 MODELOS = {}          # nombre -> pipeline cargado
 ERRORES_CARGA = {}    # nombre -> motivo del fallo
 
@@ -852,7 +860,7 @@ tk.Label(
 
 tk.Label(
     resultado_body,
-    text="Predicción para este cliente y desempeño de cada algoritmo en el conjunto de prueba",
+    text="Predicción para este cliente y desempeño de cada algoritmo (prueba y validación cruzada)",
     bg=CARD,
     fg=MUTED,
     font=("Segoe UI", 9)
@@ -869,6 +877,7 @@ resumen_label = tk.Label(
 )
 resumen_label.pack(fill="x", padx=12, pady=(0, 8))
 
+# COLUMNAS DE LA TABLA COMPARATIVA (INCLUYE F1 DE LA VALIDACIÓN CRUZADA)
 COLUMNAS_TABLA = [
     ("rank", "#", 44, "center"),
     ("modelo", "Modelo", 210, "w"),
@@ -879,6 +888,7 @@ COLUMNAS_TABLA = [
     ("rec", "Recall", 90, "center"),
     ("f1", "F1", 90, "center"),
     ("auc", "ROC-AUC", 90, "center"),
+    ("f1vc", "F1 (val. cruzada)", 140, "center"),
 ]
 
 tabla = ttk.Treeview(
@@ -905,8 +915,10 @@ nota_label = tk.Label(
     text=(
         "Las probabilidades son estimaciones de cada modelo; no garantizan que el cliente "
         "incumplirá sus pagos ni sustituyen el criterio profesional.\n"
-        "Precisión, Recall y F1 se refieren a la clase moroso y provienen del conjunto de "
-        "prueba del entrenamiento. ★ = modelo mejor evaluado según " +
+        "Accuracy, Precisión, Recall, F1 y ROC-AUC provienen del conjunto de prueba "
+        "(Precisión, Recall y F1 se refieren a la clase moroso). "
+        f"F1 (val. cruzada) = media ± desviación estándar ({TEXTO_VC}).\n"
+        "★ = modelo mejor evaluado según " +
         (CONFIG.get("criterio_ranking", "F1-score de la clase moroso") if CONFIG
          else "F1-score de la clase moroso") + "."
     ),
@@ -1122,6 +1134,7 @@ factores_canvas.bind("<Configure>", dibujar_factores)
 
 # TABLA COMPARATIVA Y DETALLE DEL MODELO ELEGIDO
 
+# FORMATO DE LAS MÉTRICAS EN PORCENTAJE
 def pct(metricas, clave):
 
     if not metricas or metricas.get(clave) is None:
@@ -1133,6 +1146,28 @@ def pct(metricas, clave):
         return "—"
 
 
+# FORMATO DE LA VALIDACIÓN CRUZADA (MEDIA ± DESVIACIÓN)
+def pct_vc(metricas, base):
+    # Muestra "media ± desviación" de la validación cruzada (si existe en la configuración)
+    if not metricas:
+        return "—"
+
+    media = metricas.get(f"cv_{base}_media")
+    desviacion = metricas.get(f"cv_{base}_std")
+
+    if media is None:
+        return "—"
+
+    try:
+        texto = f"{float(media) * 100:.1f}%"
+        if desviacion is not None:
+            texto += f" ± {float(desviacion) * 100:.1f}%"
+        return texto
+    except (TypeError, ValueError):
+        return "—"
+
+
+# LLENADO DE LA TABLA COMPARATIVA (ACCURACY, PRECISIÓN, RECALL, F1, ROC-AUC Y VALIDACIÓN CRUZADA)
 def llenar_tabla():
 
     for fila in tabla.get_children():
@@ -1173,6 +1208,7 @@ def llenar_tabla():
                 pct(met, "recall_moroso"),
                 pct(met, "f1_moroso"),
                 pct(met, "roc_auc"),
+                pct_vc(met, "f1"),
             ),
             tags=tuple(tags)
         )
@@ -1204,6 +1240,7 @@ def actualizar_resumen():
     resumen_label.config(text=texto, fg=color)
 
 
+# DETALLE DEL MODELO SELECCIONADO (MÉTRICAS DE PRUEBA Y VALIDACIÓN CRUZADA)
 def actualizar_detalle(event=None):
 
     nombre = modelo_var.get()
@@ -1226,8 +1263,15 @@ def actualizar_detalle(event=None):
         extra = (
             f"\nDesempeño en prueba:  F1 {pct(metricas, 'f1_moroso')}  ·  "
             f"Recall {pct(metricas, 'recall_moroso')}  ·  "
-            f"Precisión {pct(metricas, 'precision_moroso')}"
+            f"Precisión {pct(metricas, 'precision_moroso')}  ·  "
+            f"Accuracy {pct(metricas, 'accuracy')}"
         )
+
+        if metricas.get("cv_f1_media") is not None:
+            extra += (
+                f"\nValidación cruzada ({TEXTO_VC}):  F1 {pct_vc(metricas, 'f1')}  ·  "
+                f"Accuracy {pct_vc(metricas, 'accuracy')}"
+            )
 
     if es_moroso:
 

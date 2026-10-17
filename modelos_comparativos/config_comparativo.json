@@ -1,0 +1,289 @@
+{
+  "version": 2,
+  "fecha_entrenamiento": "2026-10-17T09:51:32",
+  "umbral": 0.5,
+  "criterio_ranking": "F1-score de la clase moroso (desempate: Recall moroso, luego ROC-AUC)",
+  "mejor_modelo": "Random Forest",
+  "split": {
+    "test_size": 0.2,
+    "random_state": 42,
+    "stratify": true,
+    "filas_entrenamiento": 6482,
+    "filas_prueba": 1621,
+    "morosos_prueba": 272
+  },
+  "validacion_cruzada": {
+    "tipo": "RepeatedStratifiedKFold",
+    "k_folds": 5,
+    "repeticiones": 3,
+    "evaluaciones_por_modelo": 15
+  },
+  "limpieza": {
+    "filas_originales": 10127,
+    "filas_sin_objetivo": 0,
+    "duplicados_eliminados": 0,
+    "filas_tras_duplicados": 10127,
+    "morosos_antes": 1627,
+    "factor_iqr": 1.5,
+    "columnas_atipicos": [
+      "idade",
+      "meses_de_relacionamento",
+      "limite_credito",
+      "valor_transacoes_12m",
+      "qtd_transacoes_12m"
+    ],
+    "limites_iqr": {
+      "idade": {
+        "q1": 41.0,
+        "q3": 52.0,
+        "limite_inferior": 24.5,
+        "limite_superior": 68.5
+      },
+      "meses_de_relacionamento": {
+        "q1": 31.0,
+        "q3": 40.0,
+        "limite_inferior": 17.5,
+        "limite_superior": 53.5
+      },
+      "limite_credito": {
+        "q1": 2555.355,
+        "q3": 11068.175,
+        "limite_inferior": -10213.875,
+        "limite_superior": 23837.405
+      },
+      "valor_transacoes_12m": {
+        "q1": 2155.825,
+        "q3": 4741.3099999999995,
+        "limite_inferior": -1722.4024999999997,
+        "limite_superior": 8619.537499999999
+      },
+      "qtd_transacoes_12m": {
+        "q1": 45.0,
+        "q3": 81.0,
+        "limite_inferior": -9.0,
+        "limite_superior": 135.0
+      }
+    },
+    "atipicos_por_columna": {
+      "idade": 2,
+      "meses_de_relacionamento": 386,
+      "limite_credito": 984,
+      "valor_transacoes_12m": 896,
+      "qtd_transacoes_12m": 2
+    },
+    "atipicos_eliminados": 2024,
+    "filas_finales": 8103,
+    "morosos_despues": 1358
+  },
+  "columnas_categoricas": [
+    "sexo",
+    "escolaridade",
+    "estado_civil",
+    "salario_anual",
+    "tipo_cartao"
+  ],
+  "columnas_numericas": [
+    "idade",
+    "dependentes",
+    "meses_de_relacionamento",
+    "qtd_produtos",
+    "iteracoes_12m",
+    "meses_inativo_12m",
+    "limite_credito",
+    "valor_transacoes_12m",
+    "qtd_transacoes_12m"
+  ],
+  "categorias": {
+    "sexo": [
+      "F",
+      "M"
+    ],
+    "escolaridade": [
+      "doutorado",
+      "ensino medio",
+      "graduacao",
+      "mestrado",
+      "na",
+      "sem educacao formal"
+    ],
+    "estado_civil": [
+      "casado",
+      "divorciado",
+      "na",
+      "solteiro"
+    ],
+    "salario_anual": [
+      "$120K +",
+      "$40K - $60K",
+      "$60K - $80K",
+      "$80K - $120K",
+      "menos que $40K",
+      "na"
+    ],
+    "tipo_cartao": [
+      "blue",
+      "gold",
+      "platinum",
+      "silver"
+    ]
+  },
+  "entorno": {
+    "python": "3.14.8",
+    "scikit_learn": "1.9.1",
+    "pandas": "3.0.6",
+    "numpy": "2.5.3",
+    "joblib": "1.6.0"
+  },
+  "modelos": [
+    {
+      "ranking": 1,
+      "modelo": "Random Forest",
+      "archivo": "random_forest.pkl",
+      "accuracy": 0.9352251696,
+      "precision_moroso": 0.8174904943,
+      "recall_moroso": 0.7904411765,
+      "f1_moroso": 0.8037383178,
+      "roc_auc": 0.966064187,
+      "verdaderos_negativos": 1301,
+      "falsos_positivos": 48,
+      "falsos_negativos": 57,
+      "verdaderos_positivos": 215,
+      "tiempo_entrenamiento_s": 0.51,
+      "cv_accuracy_media": 0.9356679787,
+      "cv_accuracy_std": 0.0061561932,
+      "cv_precision_media": 0.8000614152,
+      "cv_precision_std": 0.0226439707,
+      "cv_recall_media": 0.8219901633,
+      "cv_recall_std": 0.0195296449,
+      "cv_f1_media": 0.8107110052,
+      "cv_f1_std": 0.0174452712,
+      "cv_roc_auc_media": 0.9739805202,
+      "cv_roc_auc_std": 0.0039025103
+    },
+    {
+      "ranking": 2,
+      "modelo": "Gradient Boosting",
+      "archivo": "gradient_boosting.pkl",
+      "accuracy": 0.9265885256,
+      "precision_moroso": 0.7398119122,
+      "recall_moroso": 0.8676470588,
+      "f1_moroso": 0.7986463621,
+      "roc_auc": 0.9720817163,
+      "verdaderos_negativos": 1266,
+      "falsos_positivos": 83,
+      "falsos_negativos": 36,
+      "verdaderos_positivos": 236,
+      "tiempo_entrenamiento_s": 1.9,
+      "cv_accuracy_media": 0.9312967405,
+      "cv_accuracy_std": 0.0063803217,
+      "cv_precision_media": 0.7408497698,
+      "cv_precision_std": 0.0222380588,
+      "cv_recall_media": 0.9088417255,
+      "cv_recall_std": 0.0142534645,
+      "cv_f1_media": 0.8160833937,
+      "cv_f1_std": 0.0148888654,
+      "cv_roc_auc_media": 0.979003612,
+      "cv_roc_auc_std": 0.0037133645
+    },
+    {
+      "ranking": 3,
+      "modelo": "Árbol de decisión",
+      "archivo": "arbol_decision.pkl",
+      "accuracy": 0.8803207896,
+      "precision_moroso": 0.5984848485,
+      "recall_moroso": 0.8713235294,
+      "f1_moroso": 0.7095808383,
+      "roc_auc": 0.9334542472,
+      "verdaderos_negativos": 1190,
+      "falsos_positivos": 159,
+      "falsos_negativos": 35,
+      "verdaderos_positivos": 237,
+      "tiempo_entrenamiento_s": 0.05,
+      "cv_accuracy_media": 0.885682217,
+      "cv_accuracy_std": 0.0109729216,
+      "cv_precision_media": 0.6130592186,
+      "cv_precision_std": 0.0304969111,
+      "cv_recall_media": 0.8723248637,
+      "cv_recall_std": 0.0264699467,
+      "cv_f1_media": 0.7193038923,
+      "cv_f1_std": 0.0186391358,
+      "cv_roc_auc_media": 0.9288530094,
+      "cv_roc_auc_std": 0.0088864759
+    },
+    {
+      "ranking": 4,
+      "modelo": "SVM",
+      "archivo": "svm.pkl",
+      "accuracy": 0.9019123998,
+      "precision_moroso": 0.7364016736,
+      "recall_moroso": 0.6470588235,
+      "f1_moroso": 0.6888454012,
+      "roc_auc": 0.9261408233,
+      "verdaderos_negativos": 1286,
+      "falsos_positivos": 63,
+      "falsos_negativos": 96,
+      "verdaderos_positivos": 176,
+      "tiempo_entrenamiento_s": 3.88,
+      "cv_accuracy_media": 0.9004938192,
+      "cv_accuracy_std": 0.0076024485,
+      "cv_precision_media": 0.7306986852,
+      "cv_precision_std": 0.0297556462,
+      "cv_recall_media": 0.6445919475,
+      "cv_recall_std": 0.0289720906,
+      "cv_f1_media": 0.6845275825,
+      "cv_f1_std": 0.0240310056,
+      "cv_roc_auc_media": 0.9408359829,
+      "cv_roc_auc_std": 0.005457094
+    },
+    {
+      "ranking": 5,
+      "modelo": "KNN",
+      "archivo": "knn.pkl",
+      "accuracy": 0.8864898211,
+      "precision_moroso": 0.7444444444,
+      "recall_moroso": 0.4926470588,
+      "f1_moroso": 0.592920354,
+      "roc_auc": 0.8881905987,
+      "verdaderos_negativos": 1303,
+      "falsos_positivos": 46,
+      "falsos_negativos": 138,
+      "verdaderos_positivos": 134,
+      "tiempo_entrenamiento_s": 0.02,
+      "cv_accuracy_media": 0.8882552646,
+      "cv_accuracy_std": 0.0072946882,
+      "cv_precision_media": 0.7319911589,
+      "cv_precision_std": 0.0274493317,
+      "cv_recall_media": 0.525526008,
+      "cv_recall_std": 0.0357249936,
+      "cv_f1_media": 0.6113207698,
+      "cv_f1_std": 0.0309650906,
+      "cv_roc_auc_media": 0.8792829304,
+      "cv_roc_auc_std": 0.0105362124
+    },
+    {
+      "ranking": 6,
+      "modelo": "Regresión logística",
+      "archivo": "regresion_logistica.pkl",
+      "accuracy": 0.8130783467,
+      "precision_moroso": 0.4669509595,
+      "recall_moroso": 0.8051470588,
+      "f1_moroso": 0.5910931174,
+      "roc_auc": 0.8824565037,
+      "verdaderos_negativos": 1099,
+      "falsos_positivos": 250,
+      "falsos_negativos": 53,
+      "verdaderos_positivos": 219,
+      "tiempo_entrenamiento_s": 0.03,
+      "cv_accuracy_media": 0.8119907526,
+      "cv_accuracy_std": 0.0093040788,
+      "cv_precision_media": 0.4661872252,
+      "cv_precision_std": 0.0150021943,
+      "cv_recall_media": 0.8357671331,
+      "cv_recall_std": 0.0218758861,
+      "cv_f1_media": 0.598418669,
+      "cv_f1_std": 0.0161354921,
+      "cv_roc_auc_media": 0.90439404,
+      "cv_roc_auc_std": 0.0086074681
+    }
+  ]
+}
